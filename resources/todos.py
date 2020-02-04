@@ -59,7 +59,7 @@ class todo(Resource):
         args = self.reqparse.parse_args()
         query = models.Todo.update(**args).where(models.Todo.id==id)
         query.execute()
-        return (add_reviews(models.Todo.get(models.Todo.id==id)), 200,
+        return ((models.Todo.get(models.Todo.id==id)), 200,
                 {'Location': url_for('resources.todos.todo', id=id)})
 
     def delete(self, id):

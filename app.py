@@ -1,6 +1,8 @@
 from flask import Flask, g, jsonify, render_template
 
 import config
+from resources.todos import todos_api
+
 
 app = Flask(__name__)
 
