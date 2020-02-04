@@ -30,7 +30,7 @@ class TodoList(Resource):
         super().__init__()
 
     def get(self):
-        todos = [marshal(add_reviews(todo), todo_fields)
+        todos = [marshal((todo), todo_fields)
                    for todo in models.Todo.select()]
         return {'todos': todos}
 
@@ -53,7 +53,7 @@ class Todo(Resource):
 
     @marshal_with(todo_fields)
     def get(self, id):
-        return add_reviews(todo_or_404(id))
+        return (todo_or_404(id))
 
     def put(self, id):
         args = self.reqparse.parse_args()
