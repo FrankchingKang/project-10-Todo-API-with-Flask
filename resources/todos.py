@@ -40,7 +40,7 @@ class TodoList(Resource):
         todo = models.Todo.create(**args)
         return todo
 
-class todo(Resource):
+class Todo(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument(
