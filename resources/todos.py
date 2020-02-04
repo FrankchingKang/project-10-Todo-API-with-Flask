@@ -30,9 +30,9 @@ class TodoList(Resource):
         super().__init__()
 
     def get(self):
-        #todos = [marshal((todo), todo_fields)
-        #           for todo in models.Todo.select()]
-        return jsonify({'todo': [{'name':'frank'}]})
+        todos = [marshal((todo), todo_fields)
+                   for todo in models.Todo.select()]
+        return {'courses': courses}
 
     @marshal_with(todo_fields)
     def post(self):
