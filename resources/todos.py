@@ -32,7 +32,7 @@ class TodoList(Resource):
     def get(self):
         todos = [marshal((todo), todo_fields)
                    for todo in models.Todo.select()]
-        return {'courses': courses}
+        return jsonify({'todo': [{'name':'frank'}]})
 
     @marshal_with(todo_fields)
     def post(self):
