@@ -4,6 +4,7 @@ import config
 
 app = Flask(__name__)
 
+app.register_blueprint(todos_api)
 
 @app.route('/')
 def my_todos():
