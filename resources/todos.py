@@ -1,7 +1,7 @@
 from flask import jsonify, Blueprint, abort
 
-from flask.ext.restful import (Resource, Api, reqparse,
-                               inputs, fields, marshal,
+from flask_restful import (Resource, Api, reqparse,
+                                fields, marshal,
                                marshal_with, url_for)
 
 import models
