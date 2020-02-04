@@ -1,6 +1,6 @@
 from flask import jsonify, Blueprint
 
-from flask.ext.restful import Resource, Api , reqparse, inputs
+from flask_restful import Resource, Api , reqparse, inputs
 
 import models
 
