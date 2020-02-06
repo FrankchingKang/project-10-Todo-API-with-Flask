@@ -1,49 +1,69 @@
-from flask import jsonify, Blueprint
+from flask import jsonify, Blueprint, abort
 
 from flask_restful import Resource, Api , reqparse, inputs
 
 import models
 
+todo_fields = {
+    'name': fields.String,
+}
+
+def todo_or_404(todo_id):
+    try:
+        todo = models.Todo.get(models.Todo.id==todo_id)
+    except models.Todo.DoesNotExist:
+        abort(404)
+    else:
+        return todo
 
 class TodoList(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument(
-            'title',
+            'name',
             required=True,
-            help='No todo title provided',
+            help='No todo name provided',
             location=['form', 'json']
-        )
-        self.reqparse.add_argument(
-            'url',
-            required=True,
-            help='No todo URL provided',
-            location=['form', 'json'],
-            type=inputs.url # check the input type
         )
         super().__init__()
 
     def get(self):
         todos = [marshal((todo), todo_fields)
                    for todo in models.Todo.select()]
-        return jsonify({'todos': [{'title': 'Python Basics'}]})
+        return jsonify({'todo': [{'name':'frank'}]})
 
-
+    @marshal_with(todo_fields)
     def post(self):
         args = self.reqparse.parse_args()
-        course = models.Todo.create(**args)  # save the date to the database
-        return jsonify({'Todos': [{'title': 'Python Basics'}]})
-
+        todo = models.Todo.create(**args)
+        return todo
 
 class Todo(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument(
+            'name',
+            required=True,
+            help='No todo name provided',
+            location=['form', 'json']
+        )
+        super().__init__()
+
+    @marshal_with(todo_fields)
     def get(self, id):
-        return jsonify({'title': 'Python Basics'})
+        return (todo_or_404(id))
 
     def put(self, id):
-        return jsonify({'title': 'Python Basics'})
+        args = self.reqparse.parse_args()
+        query = models.Todo.update(**args).where(models.Todo.id==id)
+        query.execute()
+        return ((models.Todo.get(models.Todo.id==id)), 200,
+                {'Location': url_for('resources.todos.todo', id=id)})
 
     def delete(self, id):
-        return jsonify({'title': 'Python Basics'})
+        query = models.Todo.delete().where(models.Todo.id==id)
+        query.execute()
+        return '', 204, {'Location': url_for('resources.todos.todos')}
 
 todos_api = Blueprint('resources.todos', __name__)
 api = Api(todos_api)
