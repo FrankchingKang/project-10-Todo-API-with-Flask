@@ -58,13 +58,12 @@ class Todo(Resource):
         args = self.reqparse.parse_args()
         query = models.Todo.update(**args).where(models.Todo.id==id)
         query.execute()
-        return ((models.Todo.get(models.Todo.id==id)), 200,
-                {'Location': url_for('resources.todos.todo', id=id)})
+        return (models.Todo.get(models.Todo.id==id))
 
     def delete(self, id):
         query = models.Todo.delete().where(models.Todo.id==id)
         query.execute()
-        return '', 204, {'Location': url_for('resources.todos.todos')}
+        return 'delete'
 
 todos_api = Blueprint('resources.todos', __name__)
 api = Api(todos_api)
