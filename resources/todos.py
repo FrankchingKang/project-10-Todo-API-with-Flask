@@ -54,6 +54,7 @@ class Todo(Resource):
     def get(self, id):
         return (todo_or_404(id))
 
+    @marshal_with(todo_fields)
     def put(self, id):
         args = self.reqparse.parse_args()
         query = models.Todo.update(**args).where(models.Todo.id==id)
